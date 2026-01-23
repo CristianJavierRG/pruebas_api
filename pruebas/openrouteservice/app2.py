@@ -22,19 +22,17 @@ data = json.loads(call.text)
 
 print(f"TYPE: {type(call)}")
 print(f"STATUS_CODE: {call.status_code}")
-print(call.status_code, call.reason)
-
-if call.status_code == 403:
-    print("ERROR: API KEY incorrecta")
-elif call.status_code == 200:
-    print("BIEN: Todo salio OK")
 
 for keys in data:
     print(f"keys: {keys}")
-
+    
+print(call.status_code, call.reason)
 query = data["metadata"]
 
-print("Atribución: ", query["attribution"])
-print("Servicio: ", query["service"])
-print("Sello de Tiempo: ", query["timestamp"])
-print("Consulta: ", query["query"])
+if call.status_code == 200:
+    print("Atribución: ", query["attribution"])
+    print("Servicio: ", query["service"])
+    print("Sello de Tiempo: ", query["timestamp"])
+    print("Consulta: ", query["query"])
+elif call.status_code == 403:
+    print("ERROR: API KEY incorrecta")
