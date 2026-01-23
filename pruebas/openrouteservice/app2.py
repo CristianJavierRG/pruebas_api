@@ -18,10 +18,20 @@ params = {
 
 call = requests.get(url, headers=headers, params=params)
 
+data = json.loads(call.text)
+
+print(f"TYPE: {type(call)}")
 print(f"STATUS_CODE: {call.status_code}")
 print(call.status_code, call.reason)
 
-data = call.json()
+if call.status_code == 403:
+    print("ERROR: API KEY incorrecta")
+elif call.status_code == 200:
+    print("BIEN: Todo salio OK")
+
+for keys in data:
+    print(f"keys: {keys}")
+
 query = data["metadata"]
 
 print("Atribución: ", query["attribution"])
