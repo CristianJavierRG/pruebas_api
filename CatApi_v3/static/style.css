@@ -1,0 +1,125 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #2B2E3A;
+    min-height: 100vh;
+    color: #EAEAEA;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 30px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: #F4A6B8;
+}
+
+form {
+    background: rgba(58, 63, 75, 0.6);
+    padding: 25px;
+    border-radius: 15px;
+    border: 2px solid #F4A6B8;
+    margin-bottom: 30px;
+}
+
+input {
+    width: 200px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #A8DADC;
+    outline: none;
+    font-size: 1rem;
+    text-align: center;
+    background: #3A3F4B;
+    color: #EAEAEA;
+}
+
+button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    background: #F4A6B8;
+    color: #FFFFFF;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #E07A8C;
+    transform: scale(1.05);
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: #3A3F4B;
+    border-radius: 15px;
+    padding: 10px;
+    transition: 0.3s;
+    position: relative;
+    border: 2px solid #A8DADC;
+}
+
+.card:hover {
+    transform: translateY(-10px) scale(1.4);
+    z-index: 10;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+.card img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.error {
+    margin-top: 15px;
+    color: #F4A6B8;
+    font-weight: bold;
+}
+
+/* Quick buttons (moved from template) */
+.quick-buttons { 
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 24px;
+    margin-bottom: 12px;
+}
+
+.quick-btn {
+    background: linear-gradient(180deg,#A8DADC,#F4A6B8);
+    border: 2px solid #A8DADC;
+    color: #111;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    transition: transform .12s ease, box-shadow .12s ease;
+}
+
+.quick-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.22);
+}
+
+@media (max-width:480px){
+    .quick-buttons{flex-direction:column; align-items:center}
+    .quick-btn{width:100%; max-width:260px}
+}

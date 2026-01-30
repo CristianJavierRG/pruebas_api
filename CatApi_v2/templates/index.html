@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Cat API</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: 0.3s;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .tab-btn.active {
+            background: #ffe600;
+            color: black;
+        }
+
+        .tab-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-section {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            margin-bottom: 30px;
+        }
+
+        .gifs-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .gif-card {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .gif-card:hover {
+            transform: scale(1.05);
+        }
+
+        .gif-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .loading {
+            text-align: center;
+            color: #ffe600;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🐱 Cat API Galería</h1>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="imagenes">🖼️ Imágenes</button>
+        <button class="tab-btn" data-tab="gifs">🎬 GIFs</button>
+        <button class="tab-btn" data-tab="informacion">ℹ️ Gatos con Información</button>
+    </div>
+
+    <!-- TAB 1: IMÁGENES -->
+    <div id="imagenes" class="tab-content active">
+        <div class="form-section">
+            <form method="POST">
+                <label>¿Cuántos gatitos quieres ver?</label><br><br>
+                <input type="number" name="limit" min="1" max="100" required>
+                <button type="submit">Cargar</button>
+            </form>
+        </div>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <div class="gallery" id="imagenes-gallery">
+            {% for img in images %}
+                <div class="card">
+                    <div class="card-header">
+                        <h3>{{ img.breeds[0].name if img.breeds else 'Gatito Desconocido' }}</h3>
+                    </div>
+                    <img src="{{ img.url }}" alt="Gatito">
+                    <div class="card-footer">
+                        <a href="{{ url_for('cat_details', cat_id=img.id) }}" class="btn-details">Ver más</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- TAB 2: GIFs -->
+    <div id="gifs" class="tab-content">
+        <div class="form-section">
+            <label>¿Cuántos GIFs quieres ver?</label><br><br>
+            <input type="number" id="gifs-limit" min="1" max="50" value="12">
+            <button type="button" id="load-gifs-btn">Cargar GIFs</button>
+        </div>
+
+        <div class="gifs-gallery" id="gifs-gallery"></div>
+    </div>
+
+    <!-- TAB 3: GATOS CON INFORMACIÓN -->
+    <div id="informacion" class="tab-content">
+        <div class="form-section">
+            <form method="POST" action="/">
+                <label>¿Cuántos gatitos con información quieres ver?</label><br><br>
+                <input type="number" name="limit" min="1" max="100" required>
+                <button type="submit">Cargar</button>
+            </form>
+        </div>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <div class="gallery" id="info-gallery">
+            {% for img in images %}
+                <div class="card">
+                    <div class="card-header">
+                        <h3>{{ img.breeds[0].name if img.breeds else 'Gatito Desconocido' }}</h3>
+                    </div>
+                    <img src="{{ img.url }}" alt="Gatito">
+                    <div class="card-footer">
+                        <a href="{{ url_for('cat_details', cat_id=img.id) }}" class="btn-details">Ver más</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+    // Manejo de tabs con cambio de URI
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const activeTab = "{{ active_tab }}";
+
+    // Activar el tab guardado en la URI al cargar
+    window.addEventListener('load', function() {
+        const tabName = activeTab || 'imagenes';
+        const btn = document.querySelector(`[data-tab="${tabName}"]`);
+        if (btn) {
+            tabBtns.forEach(b => b.classList.remove('active'));
+            tabContents.forEach(tc => tc.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+    });
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const tabName = this.getAttribute('data-tab');
+            
+            // Cambiar URI sin recargar la página
+            window.history.pushState({tab: tabName}, '', `/?tab=${tabName}`);
+            
+            tabBtns.forEach(b => b.classList.remove('active'));
+            tabContents.forEach(tc => tc.classList.remove('active'));
+            
+            this.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        });
+    });
+
+    // Cargar GIFs
+    document.getElementById('load-gifs-btn').addEventListener('click', async function() {
+        const limit = document.getElementById('gifs-limit').value;
+        const gallery = document.getElementById('gifs-gallery');
+        gallery.innerHTML = '<div class="loading">Cargando GIFs...</div>';
+
+        try {
+            const response = await fetch(`/api/gifs?limit=${limit}`);
+            const data = await response.json();
+            gallery.innerHTML = '';
+
+            if (data.data && data.data.length > 0) {
+                data.data.forEach(gif => {
+                    const card = document.createElement('div');
+                    card.className = 'gif-card';
+                    card.innerHTML = `<img src="${gif.images.fixed_height.url}" alt="cat gif">`;
+                    gallery.appendChild(card);
+                });
+            } else {
+                gallery.innerHTML = '<p class="error">No se encontraron GIFs</p>';
+            }
+        } catch (error) {
+            gallery.innerHTML = '<p class="error">Error al cargar los GIFs</p>';
+        }
+    });
+</script>
+
+</body>
+</html>

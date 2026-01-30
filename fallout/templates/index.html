@@ -1,0 +1,20 @@
+$def with (personajes)
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fallout Codex</title>
+</head>
+<body>
+
+<h1>Fallout Codex</h1>
+
+$for p in personajes:
+    <div>
+        $if p.img:
+            <img src="$p.img" width="200">
+        <h3>$p.title</h3>
+        <p>$p.extract</p>
+    </div>
+
+</body>
+</html>

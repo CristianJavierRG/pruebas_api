@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles del Gatito - Cat API</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .card-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 150px);
+            padding: 20px;
+        }
+
+        .header-with-button {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 20px;
+        }
+
+        .header-with-button h1 {
+            margin: 0;
+            flex: 1;
+        }
+
+        .header-with-button .btn-back {
+            margin-top: 0;
+            white-space: nowrap;
+        }
+
+        .pokemon-card {
+            width: 420px;
+            background: linear-gradient(135deg, #fff8dc 0%, #fffacd 100%);
+            border: 8px solid #d4af37;
+            border-radius: 15px;
+            padding: 16px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), 
+                        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            font-family: 'Arial', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pokemon-card::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.3), transparent);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #d4af37;
+        }
+
+        .card-title {
+            font-size: 26px;
+            font-weight: bold;
+            color: #333;
+            margin: 0;
+        }
+
+        .card-hp {
+            background: #ff4444;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .card-image-container {
+            width: 100%;
+            height: 280px;
+            background: linear-gradient(135deg, #87ceeb 0%, #e0f6ff 100%);
+            border: 3px solid #d4af37;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .card-image-container img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .card-info {
+            margin-bottom: 12px;
+        }
+
+        .info-label {
+            font-size: 12px;
+            font-weight: bold;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-text {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .card-stats {
+            background: rgba(255, 255, 255, 0.6);
+            padding: 10px;
+            border-radius: 8px;
+            border: 2px solid #d4af37;
+            margin-bottom: 12px;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+
+        .stat-name {
+            font-weight: bold;
+            color: #333;
+            min-width: 80px;
+        }
+
+        .stat-bar-container {
+            flex: 1;
+            height: 20px;
+            background: #ddd;
+            border-radius: 4px;
+            margin: 0 8px;
+            overflow: hidden;
+            border: 1px solid #999;
+        }
+
+        .stat-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ffcc00, #ffff00);
+            transition: width 0.5s ease;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .stat-number {
+            font-weight: bold;
+            color: #333;
+            min-width: 30px;
+            text-align: right;
+        }
+
+        .card-type {
+            display: inline-block;
+            background: #FFD700;
+            color: #333;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            border: 2px solid #d4af37;
+        }
+
+        .card-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 10px;
+            border-top: 2px solid #d4af37;
+            font-size: 10px;
+            color: #666;
+        }
+
+        .card-id {
+            font-weight: bold;
+        }
+
+        .btn-back {
+            display: block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #ffe600;
+            color: black;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+            text-align: center;
+            border: 2px solid #d4af37;
+        }
+
+        .btn-back:hover {
+            background: #ffff00;
+            transform: scale(1.05);
+        }
+
+        .error {
+            text-align: center;
+            color: #ff0000;
+            font-size: 1.5rem;
+        }
+
+        @media (max-width: 480px) {
+            .pokemon-card {
+                width: 100%;
+                max-width: 320px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-with-button">
+        <h1>🐱 Tarjeta del Gatito</h1>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <button id="show-gifs-btn" class="btn-back" type="button" style="background: #ffb300; border: 2px solid #d4af37; color: #222;">🎬 Ver GIFs</button>
+            {% if not error %}
+                <a href="{{ url_for('index') }}" class="btn-back">← Volver</a>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% elif cat %}
+        <div class="card-container">
+            <div class="pokemon-card">
+                <div class="card-content">
+
+        <div id="gifs-gallery" style="display:none; margin-bottom: 20px;">
+            <h3 style="text-align:center; color:#d4af37; margin-bottom:10px;">GIFs de Gatitos</h3>
+            <div id="gifs-list" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;"></div>
+        </div>
+                    {% if cat.breeds %}
+                        {% set breed = cat.breeds[0] %}
+                        
+                        <div class="card-header">
+                            <h2 class="card-title">{{ breed.name }}</h2>
+                            <div class="card-hp">HP 100</div>
+                        </div>
+
+                        <div class="card-type">{{ breed.name.upper() }}</div>
+
+                        <div class="card-image-container">
+                            <img src="{{ cat.url }}" alt="{{ breed.name }}">
+                        </div>
+
+                        {% if breed.description %}
+                            <div class="card-info">
+                                <div class="info-label">Pokedex Entry</div>
+                                <div class="info-text">{{ breed.description }}</div>
+                            </div>
+                        {% endif %}
+
+                        {% if breed.origin or breed.temperament %}
+                            <div class="card-info">
+                                {% if breed.origin %}
+                                    <div class="info-label">Origen</div>
+                                    <div class="info-text">{{ breed.origin }}</div>
+                                {% endif %}
+                                {% if breed.temperament %}
+                                    <div class="info-label">Temperamento</div>
+                                    <div class="info-text">{{ breed.temperament }}</div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+
+                        <div class="card-stats">
+                            {% if breed.intelligence %}
+                                <div class="stat-row">
+                                    <span class="stat-name">Inteligencia</span>
+                                    <div class="stat-bar-container">
+                                        <div class="stat-bar-fill" style="width: {{ (breed.intelligence / 5) * 100 }}%"></div>
+                                    </div>
+                                    <span class="stat-number">{{ breed.intelligence }}/5</span>
+                                </div>
+                            {% endif %}
+
+                            {% if breed.adaptability %}
+                                <div class="stat-row">
+                                    <span class="stat-name">Adaptabilidad</span>
+                                    <div class="stat-bar-container">
+                                        <div class="stat-bar-fill" style="width: {{ (breed.adaptability / 5) * 100 }}%"></div>
+                                    </div>
+                                    <span class="stat-number">{{ breed.adaptability }}/5</span>
+                                </div>
+                            {% endif %}
+
+                            {% if breed.affection_level %}
+                                <div class="stat-row">
+                                    <span class="stat-name">Afecto</span>
+                                    <div class="stat-bar-container">
+                                        <div class="stat-bar-fill" style="width: {{ (breed.affection_level / 5) * 100 }}%"></div>
+                                    </div>
+                                    <span class="stat-number">{{ breed.affection_level }}/5</span>
+                                </div>
+                            {% endif %}
+
+                            {% if breed.energy_level %}
+                                <div class="stat-row">
+                                    <span class="stat-name">Energía</span>
+                                    <div class="stat-bar-container">
+                                        <div class="stat-bar-fill" style="width: {{ (breed.energy_level / 5) * 100 }}%"></div>
+                                    </div>
+                                    <span class="stat-number">{{ breed.energy_level }}/5</span>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="card-bottom">
+                            <div class="card-id">ID: {{ cat.id[:8] }}</div>
+                            <div>© 2026 The Cat API</div>
+                        </div>
+
+                    {% else %}
+                        <div class="card-header">
+                            <h2 class="card-title">Gatito Desconocido</h2>
+                        </div>
+                        <p class="info-text">No hay información de raza disponible.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+const btn = document.getElementById('show-gifs-btn');
+const gallery = document.getElementById('gifs-gallery');
+const gifsList = document.getElementById('gifs-list');
+let gifsLoaded = false;
+
+btn.addEventListener('click', async function() {
+    if (gallery.style.display === 'none') {
+        gallery.style.display = 'block';
+        btn.textContent = '✖ Ocultar GIFs';
+        if (!gifsLoaded) {
+            gifsList.innerHTML = '<span style="color:#888;">Cargando...</span>';
+            // Puedes poner tu propia API KEY de Giphy aquí
+            const apiKey = 'dc6zaTOxFJmzC';
+            const q = 'cat';
+            const url = `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${q}&limit=6&rating=g`;
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                gifsList.innerHTML = '';
+                data.data.forEach(gif => {
+                    const img = document.createElement('img');
+                    img.src = gif.images.fixed_height.url;
+                    img.alt = 'cat gif';
+                    img.style.borderRadius = '8px';
+                    img.style.maxWidth = '120px';
+                    img.style.maxHeight = '120px';
+                    img.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+                    gifsList.appendChild(img);
+                });
+                gifsLoaded = true;
+            } catch (e) {
+                gifsList.innerHTML = '<span style="color:red;">No se pudieron cargar los GIFs.</span>';
+            }
+        }
+    } else {
+        gallery.style.display = 'none';
+        btn.textContent = '🎬 Ver GIFs';
+    }
+});
+</script>
+</body>
+</html>

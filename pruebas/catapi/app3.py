@@ -2,7 +2,7 @@ import requests
 import json
 import webbrowser
 
-limit = input("¿Cuantas Imagenes Quieres?")
+limit = input("¿Cuantas Imagenes Quieres? \n")
 
 api_key = "live_7NJGZaisRFcQewUy1qnYS779chPlFf5F4XTDLhKKZZ5m2dGeV5VDpr6HsiyOL1RO"
 url = f"https://api.thecatapi.com/v1/images/search?limit={limit}"
@@ -19,6 +19,7 @@ print(f"TYPE: {type(call)}")
 print(f"STATUS_CODE: {call.status_code}")
 
 print(call.status_code, call.reason)
+print(data)
 
 if call.status_code == 200:
     for img in data: 
