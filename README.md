@@ -1,77 +1,90 @@
 # Pruebas API 📦
 
-Proyecto de ejemplo que demuestra el uso de **web.py** con una base de datos **MySQL** hospedada en **Supabase**, y front-end sencillo en HTML. El propósito es servir como referencia para el desarrollo de APIs REST ligeras con Python.
+Repositorio de ejemplo que alberga varios proyectos web construidos con Python, incluyendo implementaciones en **web.py**, **Flask** y **FastAPI**. Cada uno expone una API REST acompañado de un frontend simple en **HTML**, **CSS** y **JavaScript**.
 
 ---
 
 ## 📝 Descripción
 
-Esta aplicación ofrece varias versiones (`CatApi_v2`, `CatApi_v3`, etc.) que ilustran cómo construir y estructurar endpoints REST utilizando web.py. La base de datos se gestiona a través de Supabase/MySQL y la interfaz de usuario se entrega mediante plantillas HTML.
+Este workspace sirve como laboratorio didáctico para aprender a diseñar APIs y aplicaciones web ligeras:
+
+- Endpoints CRUD para recursos (e.g. “cats”).
+- Backends en web.py, Flask y FastAPI.
+- Plantillas y páginas estáticas que consumen la API con JavaScript.
+
+Las versiones se organizan en carpetas separadas (`CatApi_v2`, `CatApi_v3`, etc.) y se emplean distintos frameworks para comparar estilos de desarrollo.
 
 ## 🛠️ Tecnologías
 
-- **Lenguaje:** Python 3.x
-- **Framework:** [web.py](https://webpy.org/)
-- **Base de datos:** MySQL vía [Supabase](https://supabase.com/)
-- **Frontend:** HTML/CSS con plantillas simples
-- **Dependencias:** Listadas en `requirements.txt`
+| Capa | Herramientas |
+| --- | --- |
+| Backend | Python 3.x, web.py, Flask, FastAPI |
+| Frontend | HTML5, CSS3, JavaScript (vanilla) |
+| Base de datos | MySQL (Supabase) |
+| Gestión de dependencias | `requirements.txt` |
 
 ## ⚙️ Instalación
 
-1. Clona el repositorio:
+1. Clona el repositorio y accede al directorio:
    ```bash
    git clone https://github.com/CristianJavierRG/pruebas_api.git
    cd pruebas_api
    ```
 
-2. Crea y activa un entorno virtual (recomendado):
+2. Configura un entorno virtual:
    ```bash
    python -m venv venv
    source venv/bin/activate  # Linux/macOS
-   venv\Scripts\activate   # Windows
+   venv\\Scripts\\activate   # Windows
    ```
 
-3. Instala las dependencias:
+3. Instala dependencias generales:
    ```bash
    pip install -r requirements.txt
    ```
 
-4. Configura las variables de entorno para la conexión a Supabase/MySQL (ej. `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`).
+4. Define variables de entorno según la aplicación que ejecutes (`DB_HOST`, `DB_USER`, `DB_PASSWORD`, etc.).
 
-5. Inicia la aplicación:
-   ```bash
-   python api/app.py
-   ```
+5. Ejecuta el servidor deseado:
+   - **web.py:** `python api/app.py` o `python CatApi_v2/app.py`
+   - **Flask:** `python path/to/flask_app.py`
+   - **FastAPI:** `uvicorn path.to.module:app --reload`
 
-6. Accede al servicio en `http://localhost:8080/` o según el puerto configurado.
+6. Visita el servicio en el navegador (`http://localhost:8080` para web.py, `http://localhost:8000` para FastAPI, etc.).
 
 ## 🚀 Endpoints
 
-El proyecto incluye diferentes módulos (`api/app.py`, `CatApi_v2/app.py`, `CatApi_v3/app.py`, etc.), cada uno con sus propios endpoints. Algunos ejemplos comunes:
+Los endpoints varían ligeramente entre versiones, pero siguen el patrón REST:
 
-- `GET /cats` – Lista todos los gatos.
-- `GET /cats/<id>` – Detalle de un gato.
+```http
+GET    /items
+POST   /items
+```
+Ejemplos concretos (web.py):
 
-> **Nota:** Revisa el código de cada versión para ver la implementación y rutas exactas.
+- `GET /cats` – lista gatos
+
+Consulta cada carpeta para rutas y modelos específicos.
 
 ## 📁 Estructura del proyecto
 
 ```
-├── CatApi_v3/
-│   └── app.py                
-├── pruebas/                  
-│   ├── catapi/
-│   ├── api/
-│   ├── CatApi_v2/
+
+├── CatApi_v3/               # web.py v3
+├── pruebas/
+│   ├── catapi/              # pruebas varias
+│   ├── api/                     # web.py v1
+│   ├── CatApi_v2/               # web.py v2
+│   ├── CatApi_v3 copy/          # copia de trabajo
 │   └── openrouteservice/
-├── requirements.txt
-└── README.md
+├── requirements.txt         # dependencias globales
+└── README.md                # documentación general
 ```
 
 ## ✍️ Autor
 
-**Cristian Javier**
+**Cristian Javier** – desarrollador y educador.
 
-Puedes contactarme a través de [mi perfil en GitHub](https://github.com/CristianJavierRG).
+[GitHub](https://github.com/CristianJavierRG)
 
 ---
