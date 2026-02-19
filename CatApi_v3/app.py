@@ -7,7 +7,6 @@ app = Flask(__name__)
 API_KEY = "live_7NJGZaisRFcQewUy1qnYS779chPlFf5F4XTDLhKKZZ5m2dGeV5VDpr6HsiyOL1RO"
 URL = "https://api.thecatapi.com/v1/images/search?"
 
-
 @app.route("/", methods=["GET", "POST"])
 def index():
     images = []
