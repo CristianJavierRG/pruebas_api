@@ -20,7 +20,6 @@ Las versiones se organizan en carpetas separadas (`CatApi_v2`, `CatApi_v3`, etc.
 | --- | --- |
 | Backend | Python 3.x, web.py, Flask, FastAPI |
 | Frontend | HTML5, CSS3, JavaScript (vanilla) |
-| Base de datos | MySQL (Supabase) |
 | Gestión de dependencias | `requirements.txt` |
 
 ## ⚙️ Instalación
