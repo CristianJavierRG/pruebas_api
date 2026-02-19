@@ -13,12 +13,10 @@ def index():
     images = []
     error = None
 
-    # Leer parámetros desde GET o POST (request.values combina ambos)
     mime = request.values.get("mime_types", "jpg,png")
     limit = request.values.get("limit")
     has_breeds = request.values.get("has_breeds", "0")
 
-    # Solo hacemos la llamada a la API si se ha indicado un límite
     if limit:
         params = {
             "limit": limit,
@@ -26,7 +24,6 @@ def index():
             "api_key": API_KEY
         }
 
-        # Añadir filtro has_breeds si el usuario lo solicitó
         if has_breeds == '1':
             params["has_breeds"] = 1
 
@@ -37,14 +34,12 @@ def index():
             images = data
             print(f"TYPE: {type(call)}")
             print(f"STATUS_CODE: {call.status_code}")
-            print(data)
         elif call.status_code == 403:
             error = "❌ API KEY incorrecta"
         else:
             error = f"❌ Error {call.status_code}"
 
     return render_template("index.html", images=images, error=error, mime=mime)
-
 
 if __name__ == "__main__":
     app.run(debug=True)
